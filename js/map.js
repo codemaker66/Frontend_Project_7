@@ -1,15 +1,15 @@
-class Map
+class gMap
 {
   init()
 	{
-    let map = new google.maps.Map(document.getElementById('map'), {
+    this.map = new google.maps.Map(document.getElementById('map'), {
 		  center: {lat: 48.864716, lng: 2.349014},
 		  zoom: 10
 		})
 
     if (navigator.geolocation) {
 
-      navigator.geolocation.getCurrentPosition(function(position) {
+      navigator.geolocation.getCurrentPosition((position) => {
         let pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
@@ -17,10 +17,10 @@ class Map
 
         let marker = new google.maps.Marker({
 	  		  position: pos,
-	  		  map: map
+	  		  map: this.map
 		    })
 
-        map.setCenter(pos)
+        this.map.setCenter(pos)
 
       }, function() {
             handleLocationError(true)
@@ -33,14 +33,16 @@ class Map
       handleLocationError(false)
     }
 	}
+
+  restMarkers(lat, lng)
+  {
+    let marker = new google.maps.Marker({
+        position: {lat: lat, lng: lng},
+        map: this.map
+    })
+  }
 }
 
-function initMap() {
-
-	let start = new Map
-
-	start.init()
-}
 
 function handleLocationError(browserHasGeolocation) {
 
