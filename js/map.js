@@ -1,3 +1,7 @@
+let markers = []
+
+let array = []
+
 class gMap
 {
   init()
@@ -32,22 +36,68 @@ class gMap
       // Browser doesn't support Geolocation
       handleLocationError(false)
     }
+
+    function handleLocationError(browserHasGeolocation) {
+
+      browserHasGeolocation ? alert(`Error: The Geolocation service failed`) :
+                              alert(`Error: Your browser doesn't support geolocation`)
+            
+    }
+
 	}
 
-  restMarkers(lat, lng)
+  restMarkers(data)
   {
     let marker = new google.maps.Marker({
-        position: {lat: lat, lng: lng},
+        position: {lat: data.lat, lng: data.long},
         map: this.map
     })
+
+    markers.push(marker)
+
+    let dat = []
+
+    dat.push(data.restaurantName, data.address, data.ratings)
+
+    array.push(dat)
   }
 }
 
+let start = new gMap
 
-function handleLocationError(browserHasGeolocation) {
+google.maps.event.addDomListener(window, 'load', start.init())
 
-browserHasGeolocation ? alert(`Error: The Geolocation service failed`) :
-                        alert(`Error: Your browser doesn't support geolocation`)
+google.maps.event.addListener(start.map, 'idle', (e) => {
+
+  let div = document.getElementById('main')
+
+  div.innerHTML = ""
+
+  for (let i = 0; i < markers.length; i++){
+
+    if(start.map.getBounds().contains(markers[i].getPosition()) ){
+
+       let bloc = document.createElement("div")
+
+      bloc.id = "bloc"
+
+      let p1 = document.createElement("p")
+      p1.textContent = array[i][0]
+
+      let p2 = document.createElement("p")
+      p2.textContent = array[i][1]
+
+
+      bloc.appendChild(p1)
+      bloc.appendChild(p2)
+      div.appendChild(bloc)
         
-}
+    }
+
+  }
+        
+})
+
+
+
 
