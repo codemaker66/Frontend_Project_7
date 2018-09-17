@@ -6,6 +6,20 @@ ajaxGet("json/data.json", (result) => {
 
 		start.restMarkers(dat)
 
+		google.maps.event.addListener(start.marker, "click", function() {
+
+            start.show(dat)
+
+        })	
+
+	})
+
+	$("#main").on("click", ".bloc", function () {
+
+    	let num = $(this).attr("id")
+
+    	start.showBloc(num)
+   
 	})
 
 })

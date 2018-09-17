@@ -54,11 +54,11 @@
       "long":2.3442197,
       "ratings":[
          {
-            "stars":5,
+            "stars":2,
             "comment":"Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
          },
          {
-            "stars":3,
+            "stars":1,
             "comment":"J'ai trouvé ça correct, sans plus"
          }
       ]
@@ -70,7 +70,7 @@
       "long":2.3442197,
       "ratings":[
          {
-            "stars":5,
+            "stars":0,
             "comment":"Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
          },
          {
@@ -90,7 +90,7 @@
             "comment":"Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
          },
          {
-            "stars":3,
+            "stars":5,
             "comment":"J'ai trouvé ça correct, sans plus"
          }
       ]
@@ -102,7 +102,7 @@
       "long":4.3442197,
       "ratings":[
          {
-            "stars":5,
+            "stars":2,
             "comment":"Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
          },
          {
@@ -118,11 +118,11 @@
       "long":1.3442197,
       "ratings":[
          {
-            "stars":5,
+            "stars":2,
             "comment":"Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
          },
          {
-            "stars":3,
+            "stars":0,
             "comment":"J'ai trouvé ça correct, sans plus"
          }
       ]
