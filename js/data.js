@@ -2,15 +2,15 @@ ajaxGet("json/data.json", (result) => {
 
 	let data = JSON.parse(result)
 
+	let count = 0
+
 	data.forEach((dat) => {
 
 		start.restMarkers(dat)
 
-		google.maps.event.addListener(start.marker, "click", function() {
+		start.cli(dat, count)	
 
-            start.show(dat)
-
-        })	
+        count++
 
 	})
 
@@ -20,6 +20,16 @@ ajaxGet("json/data.json", (result) => {
 
     	start.showBloc(num)
    
+	})
+
+	$("#main").on("click", ".btn", function () { 
+
+		let num = $(this).attr("id")
+
+		markers[num].setIcon()
+
+		initRest()
+
 	})
 
 })

@@ -46,8 +46,23 @@ class gMap
 
 	}
 
+  cli(dat, count)
+  {
+
+    google.maps.event.addListener(start.marker, "click", (e) => {
+
+            this.show(dat, count)
+
+    })
+
+  }
+
   showBloc(num)
   {
+
+    markers[num].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+
+    google.maps.event.clearListeners(this.map, 'idle');
 
     let div = document.getElementById('main')
 
@@ -87,17 +102,33 @@ class gMap
         
       }
 
+      let button = document.createElement("button")
+
+      button.classList.add("btn")
+
+      button.id = num
+
+      button.type = "button"
+
+      button.textContent = "return to restaurants"
+
 
       bloc2.appendChild(p1)
       bloc2.appendChild(p2)
       bloc2.appendChild(p3)
       bloc2.appendChild(ins)
       div.appendChild(bloc2)
+      div.appendChild(button)
 
   }
 
-  show(dat)
+  show(dat, count)
   {
+
+    markers[count].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+
+     google.maps.event.clearListeners(this.map, 'idle');
+
     let div = document.getElementById('main')
 
     div.innerHTML = ""
@@ -136,12 +167,23 @@ class gMap
         
       }
 
+      let button = document.createElement("button")
+
+      button.classList.add("btn")
+
+      button.id = count
+
+      button.type = "button"
+
+      button.textContent = "return to restaurants"
+
 
       bloc2.appendChild(p1)
       bloc2.appendChild(p2)
       bloc2.appendChild(p3)
       bloc2.appendChild(ins)
       div.appendChild(bloc2)
+      div.appendChild(button)
         
     
 
@@ -163,13 +205,33 @@ class gMap
 
     array.push(dat)
   }
+
+  initR()
+  {
+    google.maps.event.addListener(start.map, 'idle', initRest)
+
+    
+  }
+
+
 }
 
 let start = new gMap
 
 google.maps.event.addDomListener(window, 'load', start.init())
 
-google.maps.event.addListener(start.map, 'idle', (e) => {
+start.initR()
+
+function initRest()
+{
+
+  if (google.maps.event.hasListeners(start.map,'idle') === false) {
+
+    start.initR()
+
+  }
+
+  
 
   let div = document.getElementById('main')
 
@@ -212,8 +274,10 @@ google.maps.event.addListener(start.map, 'idle', (e) => {
     }
 
   }
-        
-})
+
+
+}
+
 
 
 
