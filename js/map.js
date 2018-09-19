@@ -2,6 +2,8 @@ let markers = []
 
 let array = []
 
+let loc = []
+
 class gMap
 {
   init()
@@ -49,9 +51,19 @@ class gMap
   cli(dat, count)
   {
 
-    google.maps.event.addListener(start.marker, "click", (e) => {
+    google.maps.event.addListener(markers[count], "click", (e) => {
 
-            this.show(dat, count)
+            
+                markers.forEach((mar) => {
+
+                  mar.setIcon()
+
+                })
+
+                this.show(dat, count)
+      
+
+            
 
     })
 
@@ -112,11 +124,17 @@ class gMap
 
       button.textContent = "return to restaurants"
 
+      let img = document.createElement("img")
+
+      img.src = `https://maps.googleapis.com/maps/api/streetview?size=90x80&location=${loc[num][0]},
+      ${loc[num][1]}&fov=90&heading=235&pitch=10&key=YOUR_API_KEY`
+
 
       bloc2.appendChild(p1)
       bloc2.appendChild(p2)
       bloc2.appendChild(p3)
       bloc2.appendChild(ins)
+      bloc2.appendChild(img)
       div.appendChild(bloc2)
       div.appendChild(button)
 
@@ -177,11 +195,17 @@ class gMap
 
       button.textContent = "return to restaurants"
 
+      let img = document.createElement("img")
+
+      img.src = `https://maps.googleapis.com/maps/api/streetview?size=90x80&location=${loc[count][0]},
+      ${loc[count][1]}&fov=90&heading=235&pitch=10&key=YOUR_API_KEY`
+
 
       bloc2.appendChild(p1)
       bloc2.appendChild(p2)
       bloc2.appendChild(p3)
       bloc2.appendChild(ins)
+      bloc2.appendChild(img)
       div.appendChild(bloc2)
       div.appendChild(button)
         
@@ -194,7 +218,8 @@ class gMap
   {
     this.marker = new google.maps.Marker({
         position: {lat: data.lat, lng: data.long},
-        map: this.map
+        map: this.map,
+        click: false
     })
 
     markers.push(this.marker)

@@ -23,9 +23,22 @@
   </head>
   <body>
 
+    <select id="s1">
+      <option value="def" selected>default</option>
+      <option value="1">entre 1 et 2</option>
+      <option value="2">entre 2 et 3</option>
+      <option value="3">entre 3 et 4</option>
+      <option value="4">entre 4 et 5</option>
+    </select>
+
+    <button type="button" id="bc">go</button>
+
+
     <div class="container">
       <div class="row">
-        <div class="col-lg-4" id="main">
+        <div class="col-lg-4">
+          <div id="main">
+        </div>
         </div>
         <div class="col-lg-8" id="map">
         </div>
@@ -38,7 +51,7 @@
     <!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script> 
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script> 
 	<script src="js/map.js"></script>
 	<script src="js/ajax.js"></script>
 	<script src="js/data.js"></script>
