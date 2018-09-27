@@ -1,5 +1,9 @@
 class Ajax
 {
+	constructor()
+	{
+		this.data
+	}
 	init(url, callback)
 	{
 		let req = new XMLHttpRequest()
@@ -23,47 +27,15 @@ class Ajax
 
 		req.send(null)
 	}
-	getData(check, s1, s2)
+	getData()
 	{
 		this.init("json/data.json", (result) => {
 
-			let data = JSON.parse(result)
-
-			if (check) {
-
-				let res = data.filter(d => {
-	      			let avg = d.ratings.reduce((a, r) => a + r.stars, 0) / d.ratings.length;
-	      			return avg >= s1 && avg <= s2;
-	    		});
-
-	    		ajaxObj.filterData(res)
-
-			}
-			else if (check === false) {
-
-				dataObj.clearData()
+			this.data = JSON.parse(result)
 
 				let count = 0
 
-				data.forEach((dat) => {
-
-					dataObj.init(dat)
-
-					eventObj.markerClick(count)
-
-			        count++
-
-				})
-
-				dataObj.showList()
-
-			}
-			else
-			{
-
-				let count = 0
-
-				data.forEach((dat) => {
+				this.data.forEach((dat) => {
 
 					dataObj.init(dat)
 
@@ -81,31 +53,104 @@ class Ajax
 
 				eventObj.filter()
 
-			}
+				eventObj.mapClick()
+
+				eventObj.sendData()
+
+				eventObj.onComment()
 
 		})
 	}
-	filterData(res)
+	filterData(check, s1, s2)
 	{
 
+		if (check) {
+
+			let res = this.data.filter(d => {
+	  			let avg = d.ratings.reduce((a, r) => a + r.stars, 0) / d.ratings.length;
+	  			return avg >= s1 && avg <= s2;
+			});
+
+	    	dataObj.clearData()
+
+			let count = 0
+
+			res.forEach((dat) => {
+
+				if (dat.check === true) {
+
+				dataObj.init(dat, true)
+				}
+				else
+				{
+					dataObj.init(dat)
+				}
+
+				eventObj.markerClick(count)
+
+		    	count++
+
+			})
+
+			dataObj.showList()
+
+		}
+		else{
+
+			dataObj.clearData()
+
+			let count = 0
+
+			this.data.forEach((dat) => {
+
+				if (dat.check === true) {
+
+				dataObj.init(dat, true)
+				}
+				else
+				{
+					dataObj.init(dat)
+				}
+
+				eventObj.markerClick(count)
+
+		        count++
+
+			})
+
+			dataObj.showList()
+
+		}
+	}
+	update()
+	{
 		dataObj.clearData()
 
-		let count = 0
+	  	let count = 0
 
-		res.forEach((dat) => {
+		this.data.forEach((dat) => {
 
-			dataObj.init(dat)
+			if (dat.check === true) {
+
+				dataObj.init(dat, true)
+			}
+			else
+			{
+				dataObj.init(dat)
+			}
 
 			eventObj.markerClick(count)
 
-		    count++
+	        count++
 
 		})
 
 		dataObj.showList()
+
+		eventObj.mapClick()
 	}
 }
 
-let ajaxObj = new Ajax
+let ajaxObj = new Ajax()
 
 ajaxObj.getData()

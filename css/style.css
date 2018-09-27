@@ -32,3 +32,12 @@
 	margin: 15px;
 	overflow: auto;
 }
+
+#bloc3
+{
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 8px grey;
+	margin: 15px;
+	overflow: auto;
+}

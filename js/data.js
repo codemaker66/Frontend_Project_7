@@ -7,9 +7,16 @@ class Data
 		this.markers = []
 		this.dat = []
 	}
-	init(data)
+	init(data, check)
 	{
-		this.restMarkers(data.lat, data.long)
+		if (check === true) {
+
+			this.restMarkers(data.lat, data.long, true)
+		}
+		else
+		{
+			this.restMarkers(data.lat, data.long)
+		}
 
 		let array = []
 
@@ -18,12 +25,24 @@ class Data
 		this.dat.push(array)
 
 	}
-	restMarkers(lat, lng)
+	restMarkers(lat, lng, check)
   	{
-	    this.marker = new google.maps.Marker({
-	        position: {lat: lat, lng: lng},
-	        map: mapObj.map
-	    })
+	    if (check === true) {
+
+	    	this.marker = new google.maps.Marker({
+	        	position: {lat: lat, lng: lng},
+	        	map: mapObj.map,
+	        	custom: true,
+	        	icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+	    	})
+	    }
+	    else
+	    {
+	    	this.marker = new google.maps.Marker({
+	        	position: {lat: lat, lng: lng},
+	        	map: mapObj.map
+	    	})
+	    }
 
 	    this.markers.push(this.marker)
   	}
@@ -122,6 +141,42 @@ class Data
         
       }
 
+      let label = document.createElement("label")
+
+	  label.textContent = "Comment here :"
+
+	  let text = document.createElement("textarea")
+
+	  text.id = "comment"
+
+	  let rate = document.createElement("select")
+
+	  rate.id = "rate"
+
+	  let rateLabel = document.createElement("label")
+
+	  rateLabel.textContent = "Select the rating :"
+
+	  for (let i = 1; i < 6; i++) {
+
+	  	let option = document.createElement("option")
+
+		option.value = i
+
+		option.textContent = i
+
+		rate.appendChild(option)
+		
+	  }
+
+	  let send = document.createElement('button')
+
+	  send.classList.add("coInfo")
+
+      send.id = count
+
+      send.textContent = "send"
+
       let button = document.createElement("button")
 
       button.classList.add("btn")
@@ -132,10 +187,8 @@ class Data
 
       button.textContent = "return to restaurants"
 
-      /*let img = document.createElement("img")
-
-      img.src = `https://maps.googleapis.com/maps/api/streetview?size=90x80&location=${loc[count][0]},
-      ${loc[count][1]}&fov=90&heading=235&pitch=10&key=YOUR_API_KEY`*/
+      label.appendChild(text)
+      rateLabel.appendChild(rate)
 
 
       bloc2.appendChild(p1)
@@ -143,6 +196,9 @@ class Data
       bloc2.appendChild(p3)
       bloc2.appendChild(ins)
       /*bloc2.appendChild(img)*/
+      bloc2.appendChild(label)
+      bloc2.appendChild(rateLabel)
+      bloc2.appendChild(send)
       div.appendChild(bloc2)
       div.appendChild(button)
 
@@ -157,6 +213,43 @@ class Data
 	  	let div = document.getElementById('main')
 
 	    div.innerHTML = ""
+	}
+	put(input1, input2, lat, lng, select, textarea)
+	{
+		ajaxObj.data.push({
+      		"restaurantName":input1,
+      		"address":input2,
+      		"lat":lat,
+      		"long":lng,
+      		"check": true,
+      		"ratings":[
+		         {
+		            "stars":select,
+		            "comment":textarea
+		         }
+      		]
+   		})
+
+   		let div = document.getElementById('main')
+
+	  	div.innerHTML = ""
+
+	  	customMarker.setMap(null)
+
+	  	ajaxObj.update()
+	}
+	save(comment, star, num)
+	{
+		ajaxObj.data[num].ratings.push({
+            "stars":star,
+            "comment":comment
+        })
+
+		let div = document.getElementById('main')
+
+	  	div.innerHTML = ""
+
+	  	ajaxObj.update()
 	}
 
 }
