@@ -65,6 +65,23 @@ class Events
 
 			let s1 = $("#s1").val()
 
+			let s2 = $("#s2").val()
+
+			if (s1 > s2 || s1 === s2) {
+
+				alert('error')
+			}
+			else
+			{
+
+				google.maps.event.clearListeners(mapObj.map, 'click');
+
+				ajaxObj.filterData(true, s1, s2)
+
+				$("#def").show();
+
+			}
+
 			if (s1 === "0") {
 
 				ajaxObj.filterData(false)
@@ -72,16 +89,22 @@ class Events
 				eventObj.mapClick()
 
 			}
-			else
-			{
-				let s2 = Number(s1) + 1
-
-				google.maps.event.clearListeners(mapObj.map, 'click');
-
-				ajaxObj.filterData(true, s1, s2)
-			}
 
 		})
+	}
+	default()
+	{
+
+		$("#def").on("click", function() {
+
+			ajaxObj.filterData(false)
+
+			eventObj.mapClick()
+
+			$(this).hide()
+
+		})
+
 	}
 	mapClick()
 	{
@@ -168,6 +191,12 @@ class Events
 
 	  		button.id = "send"
 
+	  		let button2 = document.createElement("button")
+
+	  		button2.textContent = "stop"
+
+	  		button2.id = "stop"
+
 	  		label1.appendChild(input1)
 	  		label2.appendChild(input2)
 	  		labS.appendChild(select)
@@ -178,6 +207,7 @@ class Events
 	  		bloc3.appendChild(labS)
 	  		bloc3.appendChild(labT)
 	  		bloc3.appendChild(button)
+	  		bloc3.appendChild(button2)
 	  		div.appendChild(bloc3)
 
 		})
@@ -229,6 +259,21 @@ class Events
 			}
 
 		})
+	}
+	stop()
+	{
+		$("#main").on("click", "#stop", function() {
+
+			let div = document.getElementById('main')
+
+		  	div.innerHTML = ""
+
+		  	customMarker.setMap(null)
+
+		  	ajaxObj.update()
+
+		})
+
 	}
 
 }

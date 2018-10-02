@@ -53,11 +53,15 @@ class Ajax
 
 				eventObj.filter()
 
+				eventObj.default()
+
 				eventObj.mapClick()
 
 				eventObj.sendData()
 
 				eventObj.onComment()
+
+				eventObj.stop()
 
 		})
 	}

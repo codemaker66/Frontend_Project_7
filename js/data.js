@@ -195,7 +195,6 @@ class Data
       bloc2.appendChild(p2)
       bloc2.appendChild(p3)
       bloc2.appendChild(ins)
-      /*bloc2.appendChild(img)*/
       bloc2.appendChild(label)
       bloc2.appendChild(rateLabel)
       bloc2.appendChild(send)

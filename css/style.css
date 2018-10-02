@@ -41,3 +41,7 @@
 	margin: 15px;
 	overflow: auto;
 }
+#def
+{
+	display: none;
+}
