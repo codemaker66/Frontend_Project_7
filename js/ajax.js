@@ -2,159 +2,235 @@ class Ajax
 {
 	constructor()
 	{
-		this.data
+		this.dataArray = []
+		this.tempData = []
+		this.filter = false
+		this.val1 = null
+		this.val2 = null
+		this.test = false
 	}
-	init(url, callback)
+	sendRequest(pos)
 	{
-		let req = new XMLHttpRequest()
+		let request = {
+		    location: pos,
+		    radius: '1000',
+		    type: ['restaurant']
+	  	}
 
-		req.open("GET", url)
+	  	let service = new google.maps.places.PlacesService(mapObj.map)
+  		service.nearbySearch(request, callback)
 
-		req.addEventListener("load", (e) => {
+  		function callback(results, status) {
+		  	if (status == google.maps.places.PlacesServiceStatus.OK) {
 
-			if (req.status >= 200 && req.status < 400) {
+		  		ajaxObj.dataArray = results
 
-				callback(req.responseText)
+		  		console.log(ajaxObj.dataArray)
+
+		    	ajaxObj.getResponse()
+		  	}
+		  	else
+		  	{
+		  		alert('pas de resto dans cette région')
+		  	}
+		}
+	}
+	getDetails(num)
+	{
+		if (ajaxObj.dataArray[num].custom !== true) {
+
+			let request = {
+			placeId: this.dataArray[num].place_id,
+			fields: ['name', 'vicinity', 'rating', 'review']
+			}
+
+			let service = new google.maps.places.PlacesService(mapObj.map)
+			service.getDetails(request, callback)
+
+			function callback(place, status) {
+			  if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+			  	domObj.showInfo(place, num)
+			    
+			  }
+			}
+
+		}
+		else
+		{
+			domObj.showInfo(ajaxObj.dataArray[num], num)
+		}
+
+	}
+	getFilter(num)
+	{
+		if (ajaxObj.tempData[num].custom !== true) {
+
+			let request = {
+			placeId: this.tempData[num].place_id,
+			fields: ['name', 'vicinity', 'rating', 'review']
+			}
+
+			let service = new google.maps.places.PlacesService(mapObj.map)
+			service.getDetails(request, callback)
+
+			function callback(place, status) {
+			  if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+			  	domObj.showInfo(place, num)
+			    
+			  }
+			}
+
+		}
+		else
+		{
+			domObj.showInfo(ajaxObj.tempData[num], num)
+		}
+	}
+	getResponse(origin = true)
+	{
+		if (origin !== false) {
+
+			let count = 0
+
+			this.dataArray.forEach((data) => {
+
+				restObj.initMarkers(data.geometry.location.lat(), data.geometry.location.lng(), count)
+
+				count++
+
+			})
+
+			if (this.test === false) {
+
+				domObj.showList()
+
+			mapObj.idle()
+
+			mapObj.click()
+
+			restObj.backToList()
+
+			restObj.itemClick()
+
+			restObj.filter()
+
+			restObj.default()
+
+			restObj.stop()
+
+			restObj.sendData()
+
+			restObj.comment()
+
+			mapObj.dragEnd()
+
+			mapObj.btn()
+
+			restObj.onHover()
+
+			restObj.onLeave()
+
+			this.test = true
+
 
 			}
 			else
 			{
-				console.error(`${req.status} ${req.statusText} ${url}`)
+
+				domObj.showList()
+
 			}
-		})
 
-		req.addEventListener("error", (e) => console.error(`Network error with the url : ${url}`))
-
-		req.send(null)
-	}
-	getData()
-	{
-		this.init("json/data.json", (result) => {
-
-			this.data = JSON.parse(result)
-
-				let count = 0
-
-				this.data.forEach((dat) => {
-
-					dataObj.init(dat)
-
-					eventObj.markerClick(count)
-
-			        count++
-
-				})
-
-				eventObj.mapIdle()
-
-				eventObj.itemClick()
-
-				eventObj.backToList()
-
-				eventObj.filter()
-
-				eventObj.default()
-
-				eventObj.mapClick()
-
-				eventObj.sendData()
-
-				eventObj.onComment()
-
-				eventObj.stop()
-
-		})
-	}
-	filterData(check, s1, s2)
-	{
-
-		if (check) {
-
-			let res = this.data.filter(d => {
-	  			let avg = d.ratings.reduce((a, r) => a + r.stars, 0) / d.ratings.length;
-	  			return avg >= s1 && avg <= s2;
-			});
-
-	    	dataObj.clearData()
+		
+		}
+		else
+		{
+			restObj.clear()
 
 			let count = 0
 
-			res.forEach((dat) => {
+			this.dataArray.forEach((data) => {
 
-				if (dat.check === true) {
+				restObj.initMarkers(data.geometry.location.lat(), data.geometry.location.lng(), count)
 
-				dataObj.init(dat, true)
-				}
-				else
-				{
-					dataObj.init(dat)
-				}
-
-				eventObj.markerClick(count)
-
-		    	count++
+				count++
 
 			})
 
-			dataObj.showList()
+			if (google.maps.event.hasListeners(mapObj.map,'click') === false) {
 
-		}
-		else{
+    			mapObj.click()
 
-			dataObj.clearData()
+  			}
 
-			let count = 0
+  			if (google.maps.event.hasListeners(mapObj.map,'idle') === false) {
 
-			this.data.forEach((dat) => {
+    			mapObj.idle()
 
-				if (dat.check === true) {
+  			}
 
-				dataObj.init(dat, true)
-				}
-				else
-				{
-					dataObj.init(dat)
-				}
+  			if (google.maps.event.hasListeners(mapObj.map,'dragend') === false) {
 
-				eventObj.markerClick(count)
+    			mapObj.dragEnd()
 
-		        count++
+  			}
 
-			})
-
-			dataObj.showList()
+			domObj.showList()
 
 		}
 	}
-	update()
+	filterData(val1, val2)
 	{
-		dataObj.clearData()
+		if (val1 === undefined && val2 === undefined) {
 
-	  	let count = 0
+			val1 = this.val1
+			val2 = this.val2
+		}
+		else
+		{
+			this.val1 = val1
+			this.val2 = val2
+		}
 
-		this.data.forEach((dat) => {
+		restObj.clear()
 
-			if (dat.check === true) {
+		this.tempData.length = 0
 
-				dataObj.init(dat, true)
-			}
-			else
-			{
-				dataObj.init(dat)
-			}
+		let test = 0
 
-			eventObj.markerClick(count)
+      	for (let j = 0; j < this.dataArray.length; j++) {
 
-	        count++
+        	if (this.dataArray[j].rating >= val1 && this.dataArray[j].rating <= val2) {
+
+        		this.tempData.push(this.dataArray[j])
+
+        	}
+        
+      	}
+
+      	if (!Array.isArray(this.tempData) || !this.tempData.length) {
+
+      		alert('aucun resto')
+
+      	}
+
+      	//console.log(this.tempData)
+
+		let count = 0
+
+		this.tempData.forEach((data) => {
+
+		    restObj.initMarkers(data.geometry.location.lat(), data.geometry.location.lng(), count)
+
+			count++
 
 		})
 
-		dataObj.showList()
+		domObj.showList()
 
-		eventObj.mapClick()
 	}
 }
 
 let ajaxObj = new Ajax()
-
-ajaxObj.getData()

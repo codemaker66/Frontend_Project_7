@@ -24,12 +24,14 @@
   <body>
 
     <select id="s1">
+      <option value="1">1</option>
       <option value="2">2</option>
       <option value="3">3</option>
       <option value="4">4</option>
     </select>
 
     <select id="s2">
+      <option value="2">2</option>
       <option value="3">3</option>
       <option value="4">4</option>
       <option value="5">5</option>
@@ -38,6 +40,8 @@
     <button type="button" id="def">default</button>
 
     <button type="button" id="bc">go</button>
+
+    <button type="button" id="find" style="display: none;">chercher</button>
 
     <div class="container">
       <div class="row">
@@ -56,10 +60,10 @@
     <!-- Latest compiled and minified JavaScript -->
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script> 
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script> 
     <script src="js/map.js"></script>
     <script src="js/ajax.js"></script>
-    <script src="js/events.js"></script>
-  	<script src="js/data.js"></script>
+    <script src="js/restaurant.js"></script>
+    <script src="js/dom.js"></script>
   </body>
 </html>
