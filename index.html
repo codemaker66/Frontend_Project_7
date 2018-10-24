@@ -11,6 +11,10 @@
     <!-- Latest compiled and minified CSS -->
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css?family=Esteban" rel="stylesheet">
+
 	  <!-- Custom css -->
     <link rel="stylesheet" href="css/style.css">
 
@@ -23,39 +27,81 @@
   </head>
   <body>
 
-    <select id="s1">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-    </select>
-
-    <select id="s2">
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
-
-    <button type="button" id="def">default</button>
-
-    <button type="button" id="bc">go</button>
-
-    <button type="button" id="find" style="display: none;">chercher</button>
-
     <div class="container">
+      <h1 style="text-align: center;">Carte de restaurants</h1>
+      <hr>
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-md-7">
+          <div id="map">
+          </div>
+           <div id="filter">
+            <div id="f">
+              <h3>Outil de filtre</h3>
+            <form class="form-inline">
+              <div class="form-group">
+                <label for="select1">Afficher les restaurants qui ont entre :</label>
+                <select id="select1" class="form-control">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="select2">Et :</label>
+                <select id="select2" class="form-control">
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+              <label>Etoiles</label>
+              <br>
+              <div class="form-group" style="margin-top: 10px; margin-bottom: 5px;">
+                <button type="button" id="bc" class="btn btn-default" style="border-radius: 10px;">Filtrer</button>
+                <button type="button" id="def" class="btn btn-default" style="border-radius: 10px; display: none;">Afficher toutes les notes</button>
+            </div>
+          </form>
+        </div>
+          </div>
+        </div>
+        <div class="col-md-5">
           <div id="main">
-        </div>
-        </div>
-        <div class="col-lg-8" id="map">
+            <div class="bloc">
+              <h2 style="text-align: center;">Comment activer la géolocalisation</h2>
+              <p>1)un message doit etre deja afficher vous demandant d'autoriser le partage de votre position, si rien n'est afficher esseyer de recharger la page avec les touche Ctrl + f5 sinon vider le cache de votre navigateur et esseyer de nouvaux</p>
+              <p>2) si tout se passe bien et que vous voiyer le message clciker sur autoriser pour partager votre position, l'application va ensuite fonctioner correctement.</p>
+              <p>Si vous voulez savoire comment bien utiliser l'application veiller clicer sur le bouton d'aide a gauche de la carte</p>
+            </div>
+          </div>
         </div>
       </div>
+
+      <div class="modal fade" id="m" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 class="modal-title" style="text-align: center;">Comment utiliser l'application:</h1>
+              </div>
+              <div class="modal-body" style="padding: 20px;">
+              <p>1) Pour visualiser les informations d'un restaurant, vous devez soit cliquer sur son marqueur ou sur son élément dans la liste.</p>
+              <p>2) Vous pouvez ajouter des commentaires et des notes sur tous les restaurants lorsque vous consultez leurs informations.</p>
+              <p>3) Vous pouvez ajouter un restaurant personnalisé en cliquant sur un emplacement spécifique de la carte, vous devrez ensuite remplir un formulaire pour ajouter ses informations.</p>
+              <p>4) Il y a un outil sur la gauche que vous pouvez utiliser pour filtrer les restaurants en fonction de leur notes (il ne fonctionnera pas lors de l'affichage des informations d'un restaurant ou lors de la création d'un restaurant personnalisé).</p>
+              <p>5) Lorsque vous naviguez sur la carte, vous remarquerez l'apparition d'une petite icône de recherche à sa droite, vous pouvez l'utiliser pour rechercher d'autres restaurants dans l'emplacement actuel de la carte.</p>
+              </div>
+          </div>
+        </div>
+    </div>
+
     </div>
 
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-touch-events/1.0.5/jquery.mobile-events.js"></script>
 
     <!-- Latest compiled and minified JavaScript -->
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

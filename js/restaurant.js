@@ -34,6 +34,7 @@ class Restaurant
 
 			this.marker = new google.maps.Marker({
 	    	position: {lat: lat, lng: lng},
+	    	icon: 'map_icons/restaurant.png',
 	    	zIndex: null,
 	    	map: mapObj.map
 	    	})
@@ -47,7 +48,7 @@ class Restaurant
         	for (let i = 0; i < this.markers.length; i++) {
 
         		if (data[i].custom !== true) {
-        			this.markers[i].setIcon()
+        			this.markers[i].setIcon('map_icons/restaurant.png')
         		}
         		else
         		{
@@ -66,11 +67,15 @@ class Restaurant
     			ajaxObj.getDetails(num)
     		}
 
+    		$('#main').scrollTop(0);
+
+    		$("#main").off("mouseover")
+
     	})
 	}
 	backToList()
 	{
-		$("#main").on("click", ".btn", (e) => { 
+		$("#main").on("click", ".return", (e) => { 
 
 			let num = e.currentTarget.id
 
@@ -80,15 +85,41 @@ class Restaurant
         		}
         		else
         		{
-        			this.markers[num].setIcon()
+        			this.markers[num].setIcon('map_icons/restaurant.png')
         			this.markers[num].zIndex = null
         		}
-			
-			mapObj.idle()
+
+        	if (ajaxObj.filter === true) {
+
+        		domObj.showList()
+
+        		mapObj.idle()
+
+			$('#main').scrollTop(0);
+
+			$(e.currentTarget).hide()
+
+			$('#bc').attr('disabled', false)
+
+			restObj.onHover()
+
+        	}
+        	else
+        	{
+
+        	mapObj.idle()
 
 			mapObj.click()
 
 			domObj.showList()
+
+			$(e.currentTarget).hide()
+
+			$('#bc').attr('disabled', false)
+
+			restObj.onHover()
+
+        	}
 
 		})
 	}
@@ -107,6 +138,9 @@ class Restaurant
     		{
     			ajaxObj.getDetails(num)
     		}
+
+    		$('#main').scrollTop(0);
+    		$("#main").off("mouseover")
    
 		})
 	}
@@ -114,9 +148,11 @@ class Restaurant
 	{
 		$("#bc").on("click", (e) => { 
 
-			let s1 = $("#s1").val()
+			let s1 = $("#select1").val()
 
-			let s2 = $("#s2").val()
+			let s2 = $("#select2").val()
+
+			console.log(s1 + " " + s2)
 
 			if (s1 > s2 || s1 === s2) {
 
@@ -126,6 +162,15 @@ class Restaurant
 			{
 
 				google.maps.event.clearListeners(mapObj.map, 'click')
+
+				google.maps.event.clearListeners(mapObj.map, 'dragend')
+
+				if ($('#find').is(':visible')) {
+
+					$('#find').hide()			
+				}
+
+				$('#map').off('tap')
 
 				ajaxObj.filter = true
 
@@ -148,6 +193,12 @@ class Restaurant
 			ajaxObj.getResponse(false)
 
 			$(e.currentTarget).hide()
+
+			if ($("#main").off("mouseover")) {
+
+  				restObj.onHover()
+  			
+  			}
 
 		})
 	}
@@ -176,6 +227,15 @@ class Restaurant
 
 			ajaxObj.getResponse(false)
 
+			$('#bc').attr('disabled', false)
+
+			$('#main').scrollTop(0);
+
+			if ($("#main").off("mouseover")) {
+
+				restObj.onHover()
+			}
+
 		})
 
 	}
@@ -183,7 +243,7 @@ class Restaurant
 	{
 		$("#main").on("click", "#send", (e) => {
 
-			if ($('#input1').val() === "" || $('#input2').val() === "" || $('#textarea').val() === "") {
+			if ($('#input1').val() === "" || $('#input2').val() === "" || $('#textarea').val() === "" || $('#user').val() === "") {
 
 				alert('one of the feilds are empty')
 			}
@@ -194,11 +254,18 @@ class Restaurant
 
 			let input2 = $('#input2').val()
 
+			let user = $('#user').val()
+
 			let select = Number($('#select').val())
 
 			let textarea = $('#textarea').val()
 
-			domObj.put(input1, input2, select, textarea)
+			domObj.put(input1, input2, select, user, textarea)
+
+			$('#main').scrollTop(0);
+
+			$('#bc').attr('disabled', false)
+
 
 			}
 
@@ -208,7 +275,7 @@ class Restaurant
 	{
 		$("#main").on("click", ".coInfo", (e) => {
 
-			if ($("#comment").val() === "") {
+			if ($("#comment").val() === "" || $("#userName").val() === "") {
 
 				alert('write a comment please')
 			}
@@ -216,11 +283,17 @@ class Restaurant
 			{
 				let comment = $("#comment").val()
 
+				let userName = $("#userName").val()
+
 				let star = Number($("#rate").val())
 
-				let name = $('#name').text()
+				console.log(star)
 
-				domObj.save(comment, star, name)
+				let name = $('#main h3').text()
+
+				domObj.save(comment, star, name, userName)
+
+				$('#main').scrollTop(0);
 
 			}
 
@@ -232,9 +305,9 @@ class Restaurant
 
     		let num = e.currentTarget.id
 
-    		this.markers[num].zIndex = 99
+    		this.markers[num].zIndex = 9999
 
-    		this.markers[num].setIcon('map_icons/restaurants.png')
+    		this.markers[num].setIcon()
    
 		})
 	}
@@ -246,7 +319,7 @@ class Restaurant
     		let num = e.currentTarget.id
 
     		if (ajaxObj.dataArray[num].custom !== true) {
-        			this.markers[num].setIcon()
+        			this.markers[num].setIcon('map_icons/restaurant.png')
         			this.markers[num].zIndex = null
     		}
     		else

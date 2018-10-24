@@ -13,7 +13,7 @@ class Ajax
 	{
 		let request = {
 		    location: pos,
-		    radius: '1000',
+		    radius: '5000',
 		    type: ['restaurant']
 	  	}
 
@@ -31,7 +31,38 @@ class Ajax
 		  	}
 		  	else
 		  	{
-		  		alert('pas de resto dans cette région')
+
+		  		let div = document.getElementById('main')
+
+  		
+
+
+		  	let bloc = document.createElement('div')
+
+        bloc.classList.add("bloc")
+
+        let h4 = document.createElement('h4')
+
+        h4.textContent = "Erreur l'or de la rechereche !!"
+
+        let p = document.createElement('p')
+
+        p.textContent = "Aucun restaurants n'a été trouver dans cette region"
+
+        p.style.color = "#737373"
+
+        bloc.appendChild(h4)
+        bloc.appendChild(p)
+        div.appendChild(bloc)
+
+        google.maps.event.clearListeners(mapObj.map, 'idle')
+
+        google.maps.event.clearListeners(mapObj.map, 'click')
+
+		$('#map').off('tap')
+
+		$('#bc').attr('disabled', true)
+
 		  	}
 		}
 	}
@@ -51,6 +82,8 @@ class Ajax
 			  if (status == google.maps.places.PlacesServiceStatus.OK) {
 
 			  	domObj.showInfo(place, num)
+
+			  	console.log(place)
 			    
 			  }
 			}
@@ -104,7 +137,7 @@ class Ajax
 
 			if (this.test === false) {
 
-				domObj.showList()
+			domObj.showList()
 
 			mapObj.idle()
 
@@ -132,12 +165,31 @@ class Ajax
 
 			restObj.onLeave()
 
+			mapObj.mobile()
+
 			this.test = true
 
 
 			}
 			else
 			{
+
+				if (google.maps.event.hasListeners(mapObj.map,'idle') === false) {
+
+    			  mapObj.idle()
+
+  			    }
+
+  			    if (google.maps.event.hasListeners(mapObj.map,'click') === false) {
+
+    			mapObj.click()
+
+  				}
+
+  				mapObj.mobile()
+
+  				$('#bc').attr('disabled', false)
+
 
 				domObj.showList()
 
@@ -176,6 +228,10 @@ class Ajax
     			mapObj.dragEnd()
 
   			}
+
+  			mapObj.mobile()
+
+  			console.log(ajaxObj.dataArray)
 
 			domObj.showList()
 
@@ -227,6 +283,18 @@ class Ajax
 			count++
 
 		})
+
+		if (google.maps.event.hasListeners(mapObj.map,'idle') === false) {
+
+    			mapObj.idle()
+
+  			}
+
+  		if ($("#main").off("mouseover")) {
+
+  			restObj.onHover()
+  			
+  		}
 
 		domObj.showList()
 

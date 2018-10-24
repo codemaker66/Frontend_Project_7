@@ -1,47 +1,111 @@
-.container
+body
 {
-	margin-top: 20px;
+    font-family: 'Esteban', serif;
 }
-
 #map
 {
-	height: 600px;
+    height: 330px; 
+    border-radius: 10px;
+    border: 2px solid #F5F5F5;
+    box-shadow: 0px 0px 8px grey;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#filter
+{
+	overflow: auto;
+	text-align: center;
+	border-radius: 10px;
+	border: 2px solid #F5F5F5;
+	box-shadow: 0px 0px 8px grey;
+	margin-top: 20px;
+	margin-bottom: 20px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
 }
 
 #main
 {
-	height: 600px; 
+    margin-top: 20px;
+	height: 493px; 
 	overflow: auto;
-	border: 1px solid grey;
+	margin-bottom: 20px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 2px solid #F5F5F5;
+    box-shadow: 0px 0px 8px grey;
+
+
 }
 
 .bloc
 {
-	height: 100px; 
-	padding: 20px;
-	border-radius: 10px;
-	box-shadow: 0px 0px 8px grey;
-	margin: 15px;
+
+	overflow: auto;
+    padding: 20px;
+    border-radius: 10px;
+    border: 5px solid #F5F5F5;
+    box-shadow: 0px 0px 5px grey;
+    margin: 15px;
+
 }
 
 #bloc2
 {
-	padding: 20px;
-	border-radius: 10px;
-	box-shadow: 0px 0px 8px grey;
-	margin: 15px;
 	overflow: auto;
+    padding: 20px;
+    border-radius: 10px;
+    border: 5px solid #F5F5F5;
+    box-shadow: 0px 0px 5px grey;
+    margin: 15px;
 }
 
 #bloc3
 {
-	padding: 20px;
-	border-radius: 10px;
-	box-shadow: 0px 0px 8px grey;
-	margin: 15px;
 	overflow: auto;
+    padding: 20px;
+    border-radius: 10px;
+    border: 5px solid #F5F5F5;
+    box-shadow: 0px 0px 5px grey;
+    margin: 15px;
 }
 #def
 {
 	display: none;
+}
+
+#find
+{
+	
+    background: none rgb(255, 255, 255); 
+    border: 0px; 
+    margin-top: 20px;
+    margin-right: 10px; 
+    border-radius: 2px; 
+    height: 40px; 
+    width: 40px; 
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
+
+}
+
+#open
+{
+    background: none rgb(255, 255, 255); 
+    border: 0px; 
+    margin-top: 12px;
+    margin-left: 10px; 
+    border-radius: 2px; 
+    height: 40px; 
+    width: 40px; 
+    font-size: 20px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
+}
+
+img
+{
+    display: block; 
+    margin: auto; 
+    width: 100%;
 }
