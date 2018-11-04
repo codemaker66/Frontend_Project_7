@@ -1,6 +1,15 @@
+/*Some custom css style to display the elements correctly on the screen and to give the app a proper design*/
 body
 {
-    font-family: 'Esteban', serif;
+    font-family: "Esteban", serif;
+}
+h1
+{
+    text-align: center;
+}
+h1 + hr
+{
+    margin-bottom: 40px;
 }
 #map
 {
@@ -8,27 +17,31 @@ body
     border-radius: 10px;
     border: 2px solid #F5F5F5;
     box-shadow: 0px 0px 8px grey;
-    margin-top: 20px;
     margin-bottom: 20px;
 }
-
-#filter
+#filterBloc
 {
 	overflow: auto;
 	text-align: center;
 	border-radius: 10px;
 	border: 2px solid #F5F5F5;
 	box-shadow: 0px 0px 8px grey;
-	margin-top: 20px;
 	margin-bottom: 20px;
     display: flex; 
     align-items: center; 
     justify-content: center;
 }
-
+#filterButtons
+{
+    margin-top: 10px; 
+    margin-bottom: 5px;
+}
+#default
+{
+    display: none;
+}
 #main
 {
-    margin-top: 20px;
 	height: 493px; 
 	overflow: auto;
 	margin-bottom: 20px;
@@ -36,33 +49,26 @@ body
     border-bottom-left-radius: 10px;
     border: 2px solid #F5F5F5;
     box-shadow: 0px 0px 8px grey;
-
-
 }
-
 .bloc
 {
-
-	overflow: auto;
-    padding: 20px;
-    border-radius: 10px;
-    border: 5px solid #F5F5F5;
-    box-shadow: 0px 0px 5px grey;
-    margin: 15px;
-
-}
-
-#bloc2
-{
-	overflow: auto;
+    overflow: auto;
     padding: 20px;
     border-radius: 10px;
     border: 5px solid #F5F5F5;
     box-shadow: 0px 0px 5px grey;
     margin: 15px;
 }
-
-#bloc3
+h2
+{
+    text-align: center;
+    margin-bottom: 20px;
+}
+#main .fa
+{
+    color: gold;
+}
+.item
 {
 	overflow: auto;
     padding: 20px;
@@ -71,14 +77,22 @@ body
     box-shadow: 0px 0px 5px grey;
     margin: 15px;
 }
-#def
+.return
 {
-	display: none;
+    margin-bottom: 20px;
 }
-
-#find
+.bloc img
 {
-	
+    display: block; 
+    margin: auto; 
+    width: 100%;
+}
+legend
+{
+    border-bottom: 0px;
+}
+#searchBtn
+{
     background: none rgb(255, 255, 255); 
     border: 0px; 
     margin-top: 20px;
@@ -86,11 +100,10 @@ body
     border-radius: 2px; 
     height: 40px; 
     width: 40px; 
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
-
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+    display: none;
 }
-
-#open
+#helpBtn
 {
     background: none rgb(255, 255, 255); 
     border: 0px; 
@@ -102,10 +115,11 @@ body
     font-size: 20px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
 }
-
-img
+.modal-title
 {
-    display: block; 
-    margin: auto; 
-    width: 100%;
+    text-align: center;
+}
+.modal-body
+{
+    padding: 20px;
 }

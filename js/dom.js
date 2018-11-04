@@ -1,441 +1,233 @@
 class Dom
 {
-  getStars(rating) {
-
-        // Round to nearest half
-        rating = Math.round(rating * 2) / 2;
-        let output = [];
-
-        // Append all the filled whole stars
-        for (var i = rating; i >= 1; i--)
-          output.push('<i class="fa fa-star" aria-hidden="true" style="color: gold;"></i>&nbsp;');
-
-        // If there is a half a star, append it
-        if (i == .5) output.push('<i class="fa fa-star-half-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
-
-        // Fill the empty stars
-        for (let i = (5 - rating); i >= 1; i--)
-          output.push('<i class="fa fa-star-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
-
-        return output.join('');
-
-  }
-
+	//This method generate the stars from the given rating value
+	generateStars(rating)
+	{
+		let i
+		let output = []
+		rating = Math.round(rating * 2) / 2
+		for (i = rating; i >= 1; i--){
+			output.push("<i class='fa fa-star' aria-hidden='true'></i>&nbsp;")
+		}
+		if (i === .5){
+			output.push("<i class='fa fa-star-half-o' aria-hidden='true'></i>&nbsp;")
+		}
+		for (let i = (5 - rating); i >= 1; i--){
+			output.push("<i class='fa fa-star-o' aria-hidden='true'></i>&nbsp;")
+		}
+		return output.join("")
+	}
+	//This method create a list of all the restaurants whose their markers are visible in the screen
 	showList()
 	{
-		
-    let data = []
-
-    if (ajaxObj.filter === true) {
-
-      data = ajaxObj.tempData
-
-    }
-    else
-    {
-      data = ajaxObj.dataArray
-    }
-
-		let div = document.getElementById('main')
-
-  		div.innerHTML = ""
-
-	  	for (let i = 0; i < restObj.markers.length; i++){
-
-	    	if(mapObj.map.getBounds().contains(restObj.markers[i].getPosition()) ){
-
-		       	let bloc = document.createElement("div")
-
-		      	bloc.classList.add("bloc")
-
-		      	bloc.id = i
-
-		      	let p1 = document.createElement("h4")
-		      	p1.textContent = data[i].name
-
-		      	let p2 = document.createElement("p")
-            if (data[i].rating === undefined) {
-
-              p2.textContent = `il n'ya pas de notes pour ce restaurant`
-            }
-            else
-            {
-              p2.innerHTML = `${data[i].rating} ${domObj.getStars(data[i].rating)}`
-            }
-
-            let p3 = document.createElement("p")
-            p3.style.color = "#737373"
-            p3.textContent = data[i].vicinity
-
-		      	bloc.appendChild(p1)
-		      	bloc.appendChild(p2)
-		      	bloc.appendChild(p3)
-		      	div.appendChild(bloc)
-
-	    	}
-	  	}	
-
-      if (div.innerHTML === "") {
-
-        let bloc = document.createElement('div')
-
-        bloc.classList.add("bloc")
-
-        let h4 = document.createElement('h4')
-
-        h4.textContent = "Aucun restaurants dans cette position !!"
-
-        let p = document.createElement('p')
-
-        p.textContent = "Veuiez dézoomer ou chercher des restaurants dans une autre posistion"
-
-        p.style.color = "#737373"
-
-        bloc.appendChild(h4)
-        bloc.appendChild(p)
-        div.appendChild(bloc)
-
-      }
+		let main = document.getElementById("main")
+		main.innerHTML = ""
+		for (let i = 0; i < restObj.markers.length; i++){
+			if(mapObj.map.getBounds().contains(restObj.markers[i].getPosition())){
+				let item = document.createElement("div")
+				item.classList.add("item")
+				item.id = i
+				let h4 = document.createElement("h4")
+				h4.textContent = dataObj.dat[i].name
+				let p = document.createElement("p")
+				if (dataObj.dat[i].rating === undefined) {
+					p.textContent = "Ce restaurant n'a aucune note."
+				}
+				else
+				{
+					p.innerHTML = `${dataObj.dat[i].rating.toFixed(1)} ${domObj.generateStars(dataObj.dat[i].rating)}`
+				}
+				let p2 = document.createElement("p")
+				p2.style.color = "#737373"
+				p2.textContent = dataObj.dat[i].vicinity
+				item.appendChild(h4)
+				item.appendChild(p)
+				item.appendChild(p2)
+				main.appendChild(item)
+			}
+		}	
+		if (main.innerHTML === "") {
+			let bloc = document.createElement("div")
+			bloc.classList.add("bloc")
+			let h4 = document.createElement("h4")
+			h4.textContent = "Aucun restaurant n'est visible à cet endroit !!"
+			let p = document.createElement("p")
+			p.textContent = "Essayez de dézoomer ou de déplacer la carte vers un endroit où il y a des restaurants."
+			p.style.color = "#737373"
+			bloc.appendChild(h4)
+			bloc.appendChild(p)
+			main.appendChild(bloc)
+		}
 	}
-	showInfo(place, i)
+	//This method display all the details of a restaurant
+	showDetails(place, i)
 	{
-
-    let data = []
-
-    if (ajaxObj.filter === true) {
-
-      data = ajaxObj.tempData
-
-    }
-    else
-    {
-      data = ajaxObj.dataArray
-    }
-
-		restObj.markers[i].setIcon('map_icons/restaurants.png')
-
-		google.maps.event.clearListeners(mapObj.map, 'idle')
-
-    google.maps.event.clearListeners(mapObj.map, 'click')
-
-	    let div = document.getElementById('main')
-
-	    div.innerHTML = ""
-
-	    let bloc2 = document.createElement("div")
-
-		  bloc2.id = "bloc2"
-
-      let img = document.createElement('img')
-      img.src = 'cbk.jpg'
-      img.classList.add("img-responsive")
-      img.classList.add('img-rounded')
-
-        let p1 = document.createElement("h3")
-        p1.textContent = place.name
-
-      	let p2 = document.createElement("p")
-        p2.style.color = "#737373"
-      	p2.textContent = place.vicinity
-
-      	let p3 = document.createElement("p")
-      	/*if (place.rating !== undefined) {
-            p3.textContent = `la moyennes est de ${place.rating} etoiles`
-        }
-        else */if (data[i].rating !== undefined) {
-
-          p3.innerHTML = `${data[i].rating} ${domObj.getStars(data[i].rating)}`
-
-        }
-        else
-        {
-          p3.textContent = `il n'ya pas de notes pour ce restaurant`
-        }
-
-        let hr1 = document.createElement('hr')
-
-        let ins = document.createElement("div")
-
-        if (place.reviews !== undefined) {
-
-        let h4 = document.createElement('h4')
-
-        h4.textContent = "Avis des utilisateurs google :"
-
-        ins.appendChild(h4)
-
-            for (let j = 0; j < place.reviews.length; j++) {
-
-            let p4 = document.createElement("p")
-
-            let p5 = document.createElement("p")
-
-            let p6 = document.createElement('p')
-
-            let hr = document.createElement('hr')
-
-            p4.textContent = place.reviews[j].author_name 
-
-            p5.innerHTML = `${domObj.getStars(place.reviews[j].rating)}`
-
-            if (place.reviews[j].text.length !== 0) {
-
-              p6.textContent = place.reviews[j].text
-
-            }
-            else
-            {
-                p6.textContent = "L'utilisateur n'a pas laisser de commentaires"
-            }
-
-            ins.appendChild(p4)
-            ins.appendChild(p5)
-            ins.appendChild(p6)
-            ins.appendChild(hr)
-        
-          }
-
-        }
-        else
-        {
-          let p4 = document.createElement("p")
-
-          let hr = document.createElement('hr')
-
-          p4.textContent = "Aucun commentaires des utilasteurs google pour ce restaurant :("
-
-          ins.appendChild(p4)
-          ins.appendChild(hr)
-
-        }
-
-        let cv = document.createElement('div')
-
-        if (data[i].comment !== undefined) {
-
-          let ha = document.createElement('h4')
-
-          ha.textContent = "Vos avis :"
-
-          cv.appendChild(ha)
-
-              for (let j = 0; j < data[i].comment.length; j++) {
-
-                  let p = document.createElement("p")
-
-                  let hr = document.createElement('hr')
-
-                  let p2 = document.createElement('p')
-
-                  let p3 = document.createElement('p')
-
-                  p2.innerHTML = `${domObj.getStars(data[i].userRating[j])}`
-
-                  p.textContent = data[i].userName[j]
-
-                  p3.textContent = data[i].comment[j]
-
-                cv.appendChild(p)
-                cv.appendChild(p2)
-                cv.appendChild(p3)
-                cv.appendChild(hr)
-                
-              }
-
-        }
-
-        let form = document.createElement('div')
-
-        form.innerHTML = `
-        <form>
-          <legend style="border-bottom: 0px;">Ajouter un avis :</legend>
-            <div class="form-group">
-              <label for="userName">Votre nom : </label>
-              <input id="userName" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="rate">choisisez une note : </label>
-              <select id="rate" class="form-control">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="comment">Votre Commentaire : </label>
-              <textarea id="comment" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-              <button type="button" class="pull-right btn coInfo" id="${i}">Envoyer</button>
-            </div>
-        </form>`
-
-        cv.appendChild(form)
-
-      	let button = document.createElement("button")
-
-      	button.classList.add("return")
-
-        button.classList.add("btn")
-
-        button.classList.add("btn-default")
-
-        button.style.marginBottom = "20px"
-
-      	button.id = i
-
-      	button.type = "button"
-
-      	button.textContent = "Retourner a la liste"
-
-        if (ajaxObj.filter === false) {
-
-          $('#bc').attr('disabled', true)
-
-        }
-
-        bloc2.appendChild(button)
-
-        bloc2.appendChild(img)
-      	bloc2.appendChild(p1)
-      	bloc2.appendChild(p3)
-      	bloc2.appendChild(p2)
-        bloc2.appendChild(hr1)
-      	bloc2.appendChild(ins)
-      	bloc2.appendChild(cv)
-      	div.appendChild(bloc2)
+		restObj.markers[i].setIcon("icons/selected_restaurant.png")
+		restObj.markers[i].zIndex = 9999
+		google.maps.event.clearListeners(mapObj.map, "idle")
+		google.maps.event.clearListeners(mapObj.map, "click")
+		if (dataObj.filter === false) {
+			$("#filter").attr("disabled", true)
+		}
+		let main = document.getElementById("main")
+		main.innerHTML = ""
+		let bloc = document.createElement("div")
+		bloc.classList.add("bloc")
+		let button = document.createElement("button")
+		button.classList.add("return", "btn", "btn-default")
+		button.id = i
+		button.textContent = "Retourner à la liste"
+		let img = document.createElement("img")
+		img.src = `https://maps.googleapis.com/maps/api/streetview?size=400x200&location=
+		${dataObj.dat[i].geometry.location.lat()},${dataObj.dat[i].geometry.location.lng()}
+		&fov=90&heading=235&pitch=10&key=YOUR_API_KEY`
+		img.classList.add("img-responsive", "img-rounded")
+		let h3 = document.createElement("h3")
+		h3.textContent = place.name
+		let p = document.createElement("p")  
+		if (dataObj.dat[i].rating !== undefined) {
+			p.innerHTML = `${dataObj.dat[i].rating.toFixed(1)} ${domObj.generateStars(dataObj.dat[i].rating)}`
+		}
+		else
+		{
+			p.textContent = "Ce restaurant n'a aucune note."
+		}
+		let p2 = document.createElement("p")
+		p2.style.color = "#737373"
+		p2.textContent = place.vicinity
+		let hr = document.createElement("hr")
+		let usersReviews = document.createElement("div")
+		if (place.reviews !== undefined) {
+			let h4 = document.createElement("h4")
+			h4.textContent = "Avis des utilisateurs de Google :"
+			usersReviews.appendChild(h4)
+			for (let j = 0; j < place.reviews.length; j++) {
+				let p = document.createElement("p")
+				let p2 = document.createElement("p")
+				let p3 = document.createElement("p")
+				let hr = document.createElement("hr")
+				p.textContent = place.reviews[j].author_name 
+				p2.innerHTML = `${domObj.generateStars(place.reviews[j].rating)}`
+				if (place.reviews[j].text.length !== 0) {
+					p3.textContent = place.reviews[j].text
+				}
+				else
+				{
+					p3.textContent = "Cet utilisateur n'a laissé aucun commentaire."
+				}
+				usersReviews.appendChild(p)
+				usersReviews.appendChild(p2)
+				usersReviews.appendChild(p3)
+				usersReviews.appendChild(hr)
+			}
+		}
+		else
+		{
+			let p = document.createElement("p")
+			let hr = document.createElement("hr")
+			p.textContent = "Aucun commentaire des utilisateurs de Google pour ce restaurant."
+			usersReviews.appendChild(p)
+			usersReviews.appendChild(hr)
+		}
+		let customReviews = document.createElement("div")
+		if (dataObj.dat[i].comment !== undefined) {
+			let h4 = document.createElement("h4")
+			h4.textContent = "Vos avis :"
+			customReviews.appendChild(h4)
+			for (let j = 0; j < dataObj.dat[i].comment.length; j++) {
+				let p = document.createElement("p")
+				let p2 = document.createElement("p")
+				let p3 = document.createElement("p")
+				let hr = document.createElement("hr")
+				p.textContent = dataObj.dat[i].userName[j]
+				p2.innerHTML = `${domObj.generateStars(dataObj.dat[i].userRating[j])}`
+				p3.textContent = dataObj.dat[i].comment[j]
+				customReviews.appendChild(p)
+				customReviews.appendChild(p2)
+				customReviews.appendChild(p3)
+				customReviews.appendChild(hr)
+			}
+		}
+		let formBloc = document.createElement("div")
+		formBloc.innerHTML = `
+			<form>
+				<legend>Ajouter un avis :</legend>
+				<div class="form-group">
+					<label for="userName">Votre nom :</label>
+					<input id="userName" type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="rate">Sélectionner une note :</label>
+					<select id="rate" class="form-control">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="comment">Votre commentaire :</label>
+					<textarea id="comment" class="form-control"></textarea>
+				</div>
+				<div class="form-group">
+					<button type="button" class="pull-right btn btn-default review" id="${i}">Envoyer</button>
+				</div>
+			</form>`
+		customReviews.appendChild(formBloc)
+		bloc.appendChild(button)
+		bloc.appendChild(img)
+		bloc.appendChild(h3)
+		bloc.appendChild(p)
+		bloc.appendChild(p2)
+		bloc.appendChild(hr)
+		bloc.appendChild(usersReviews)
+		bloc.appendChild(customReviews)
+		main.appendChild(bloc)
 	}
-	createRestaurant()
+	//This method show the custom restaurant form when the user click on the map
+	showRestForm()
 	{
-
-		let div = document.getElementById('main')
-
-  		div.innerHTML = ""
-
-  		let bloc3 = document.createElement("div")
-
-  		bloc3.id = "bloc3"
-
-      bloc3.innerHTML = `<form>
-          <legend style="border-bottom: 0px;">Ajouter un restaurant:</legend>
-            <div class="form-group">
-              <label for="input1">Nom de l'etablisement: </label>
-              <input id="input1" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="input2">L'address: </label>
-              <input id="input2" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="user">Votre nom : </label>
-              <input id="user" type="text" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="select">Notez ce restaurants : </label>
-              <select id="select" class="form-control">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="textarea">Ajouter un Commentaire : </label>
-              <textarea id="textarea" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-              <button type="button" class="pull-right btn" id="send">Créé</button>
-              <button type="button" class="pull-left btn" id="stop">Anuller</button>
-            </div>
-        </form>`
-
-  		div.appendChild(bloc3)
+		let main = document.getElementById("main")
+		main.innerHTML = ""
+		$(main).scrollTop(0)
+		let bloc = document.createElement("div")
+		bloc.classList.add("bloc")
+		bloc.innerHTML = `
+			<form>
+				<legend>Ajouter un restaurant :</legend>
+				<div class="form-group">
+					<label for="restaurantName">Nom du restaurant :</label>
+					<input id="restaurantName" type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="address">Adresse du restaurant :</label>
+					<input id="address" type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="userName">Votre nom :</label>
+					<input id="userName" type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="rate">Noter ce restaurant :</label>
+					<select id="rate" class="form-control">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="comment">Ajouter un commentaire :</label>
+					<textarea id="comment" class="form-control"></textarea>
+				</div>
+				<div class="form-group">
+					<button type="button" class="pull-right btn btn-default" id="create">Créé</button>
+					<button type="button" class="pull-left btn btn-default" id="cancel">Anuller</button>
+				</div>
+			</form>`
+		main.appendChild(bloc)
 	}
-  put(input1, input2, select, user, textarea)
-  {
-
-    ajaxObj.dataArray.push({
-          name: input1,
-          vicinity: input2,
-          geometry: {location: mapObj.tempMarker.position},
-          custom: true
-    })
-
-    mapObj.tempMarker.setMap(null)
-
-    domObj.save(textarea, select, input1, user)
-
-  }
-  save(comment, star, name, userName)
-  {
-
-    for (var i = 0; i < ajaxObj.dataArray.length; i++) {
-      if (ajaxObj.dataArray[i].name === name) {
-
-        if (ajaxObj.dataArray[i].rating === undefined) {
-
-           ajaxObj.dataArray[i].rating = star
-
-        }
-        else
-        {
-          let total = ajaxObj.dataArray[i].rating + star
-
-          ajaxObj.dataArray[i].rating = total/2
-        }
-
-        if (ajaxObj.dataArray[i].comment === undefined) {
-
-          ajaxObj.dataArray[i].comment = [comment]
-
-        }
-        else
-        {
-          ajaxObj.dataArray[i].comment.push(comment)
-        }
-
-        if (ajaxObj.dataArray[i].userName === undefined) {
-
-          ajaxObj.dataArray[i].userName = [userName]
-
-        }
-        else
-        {
-          ajaxObj.dataArray[i].userName.push(userName)
-        }
-
-        if (ajaxObj.dataArray[i].userRating === undefined) {
-
-          ajaxObj.dataArray[i].userRating = [star]
-
-        }
-        else
-        {
-          ajaxObj.dataArray[i].userRating.push(star)
-        }
-
-        break;
-      }
-    }
-
-
-    let div = document.getElementById('main')
-
-    div.innerHTML = ""
-
-    if (ajaxObj.filter === true) {
-
-      ajaxObj.filterData()
-    }
-    else
-    {
-      ajaxObj.getResponse(false)
-    }
-
-  }
 }
-
-let domObj = new Dom()
+let domObj = new Dom
